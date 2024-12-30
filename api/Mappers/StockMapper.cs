@@ -1,5 +1,5 @@
 using api.Models;
-using api.Dtos.Stock;
+using api.Dtos;
 
 namespace api.Mappers;
 public static class StockMapper
@@ -8,13 +8,25 @@ public static class StockMapper
     {
         return new StockDto
         {
-            Id = stock.Id,
             Symbol = stock.Symbol,
             CompanyName = stock.CompanyName,
             Purchase = stock.Purchase,
             LastDiv = stock.LastDiv,
             Industry = stock.Industry,
             MarketCap = stock.MarketCap
+        };
+    }
+
+    public static Stock ToStock(this StockDto stockDto)
+    {
+        return new Stock
+        {
+            Symbol = stockDto.Symbol,
+            CompanyName = stockDto.CompanyName,
+            Purchase = stockDto.Purchase,
+            LastDiv = stockDto.LastDiv,
+            Industry = stockDto.Industry,
+            MarketCap = stockDto.MarketCap
         };
     }
 }
