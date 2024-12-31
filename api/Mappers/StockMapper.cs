@@ -4,29 +4,31 @@ using api.Dtos;
 namespace api.Mappers;
 public static class StockMapper
 {
-    public static StockDto ToDto(this Stock stock)
+    public static StockDto ToDto(this Stock stock, StockDto? stockDto = null)
     {
-        return new StockDto
-        {
-            Symbol = stock.Symbol,
-            CompanyName = stock.CompanyName,
-            Purchase = stock.Purchase,
-            LastDiv = stock.LastDiv,
-            Industry = stock.Industry,
-            MarketCap = stock.MarketCap
-        };
+        stockDto ??= new StockDto();
+        
+        stockDto.Symbol = stock.Symbol;
+        stockDto.CompanyName = stock.CompanyName;
+        stockDto.Purchase = stock.Purchase;
+        stockDto.LastDiv = stock.LastDiv;
+        stockDto.Industry = stock.Industry;
+        stockDto.MarketCap = stock.MarketCap;
+
+        return stockDto;
     }
 
-    public static Stock ToStock(this StockDto stockDto)
+    public static Stock ToStock(this StockDto stockDto, Stock? stock = null)
     {
-        return new Stock
-        {
-            Symbol = stockDto.Symbol,
-            CompanyName = stockDto.CompanyName,
-            Purchase = stockDto.Purchase,
-            LastDiv = stockDto.LastDiv,
-            Industry = stockDto.Industry,
-            MarketCap = stockDto.MarketCap
-        };
+        stock ??= new Stock();
+        
+        stock.Symbol = stockDto.Symbol;
+        stock.CompanyName = stockDto.CompanyName;
+        stock.Purchase = stockDto.Purchase;
+        stock.LastDiv = stockDto.LastDiv;
+        stock.Industry = stockDto.Industry;
+        stock.MarketCap = stockDto.MarketCap;
+
+        return stock;
     }
 }

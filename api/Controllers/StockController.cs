@@ -3,6 +3,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 
@@ -13,16 +14,19 @@ public class StockController(ApplicationDBContext context) : ControllerBase
     private readonly ApplicationDBContext _context = context;
 
     [HttpGet]
-    public IActionResult GetStocks()
+    public async Task<IActionResult> GetStocks()
     {
-        var stocks = _context.Stock.ToList().Select(s => s.ToDto());
-        return Ok(stocks);
+        var stocks = await _context.Stock
+            .AsNoTracking()
+            .ToListAsync();
+        var stocksDto = stocks.Select(s => s.ToDto());
+        return Ok(stocksDto);
     }
 
     [HttpGet("{id:int}")]
-    public IActionResult GetStock([FromRoute] int id)
+    public async Task<IActionResult> GetStock([FromRoute] int id)
     {
-        var stock = _context.Stock.Find(id);
+        var stock = await _context.Stock.FindAsync(id);
         return stock switch
         {
             null => NotFound(),
@@ -31,45 +35,44 @@ public class StockController(ApplicationDBContext context) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateStock([FromBody] StockDto stockDto)
+    public async Task<IActionResult> CreateStock([FromBody] StockDto stockDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var stock = stockDto.ToStock();
-        _context.Stock.Add(stock);
-        _context.SaveChanges();
+        await _context.Stock.AddAsync(stock);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetStock), new { id = stock.Id }, stock.ToDto());
+
     }
 
     [HttpPut("{id:int}")]
-    public IActionResult UpdateStock([FromRoute] int id, [FromBody] StockDto stockDto)
+    public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] StockDto stockDto)
     {
-        var stock = _context.Stock.Find(id);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var stock = await _context.Stock.FindAsync(id);
         if (stock == null)
-        {
-            return NotFound();
-        }
+            return NotFound(new { Message = $"Stock with ID {id} not found." });
 
-        stock.Symbol = stockDto.Symbol;
-        stock.CompanyName = stockDto.CompanyName;
-        stock.Purchase = stockDto.Purchase;
-        stock.LastDiv = stockDto.LastDiv;
-        stock.Industry = stockDto.Industry;
-        stock.MarketCap = stockDto.MarketCap;
-
-        _context.SaveChanges();
+        stockDto.ToStock(stock);
+        await _context.SaveChangesAsync();
         return Ok(stock.ToDto());
     }
 
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteStock([FromRoute] int id)
+    public async Task<IActionResult> DeleteStock([FromRoute] int id)
     {
-        var stock = _context.Stock.Find(id);
+        var stock = await _context.Stock.FindAsync(id);
         if (stock == null)
         {
             return NotFound();
         }
 
         _context.Stock.Remove(stock);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return NoContent();
     }
 }
