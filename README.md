@@ -29,6 +29,8 @@ donent watch run
     - Microsoft.EntityFrameworkCore.SqlServer
     - Microsoft.EntityFrameworkCore.Tools
     - Microsoft.EntityFrameworkCore.Design
+    - Microsoft.AspNetCore.Mvc.NewtonsoftJson
+    - Newtonsoft.Json
 ## 4. Connecting to SQL Database and Setting Up Migrations
 - Install and run [Azure SQL Edge](https://hub.docker.com/r/microsoft/azure-sql-edge)
 ```bash

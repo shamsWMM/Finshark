@@ -29,7 +29,7 @@ public class ExceptionMiddleware (RequestDelegate next)
         var response = new
         {
             Status = code,
-            Message = ex.Message,
+            ex.Message,
             Hello = "World",
             #if DEBUG
                 Detail = ex.StackTrace

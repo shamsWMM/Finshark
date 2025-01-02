@@ -5,6 +5,7 @@ using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 using api.Repositories;
+using static api.Constants.Messages;
 
 namespace api.Controllers;
 
@@ -25,7 +26,7 @@ public class StockController(IStockRepository stockRepository) : ControllerBase
         var stock = await stockRepository.GetStock(id);
         return stock switch
         {
-            null => StockNotfFound(id),
+            null => NotFound(ItemNotFound(Item.Stock, id)),
             _ => Ok(stock.ToDto())
         };
     }
@@ -49,7 +50,7 @@ public class StockController(IStockRepository stockRepository) : ControllerBase
 
         var stockId = await stockRepository.UpdateStock(id, stockDto);
         if (stockId == null)
-            return StockNotfFound(id);
+            return NotFound(ItemNotFound(Item.Stock, id));
 
         var stock = await stockRepository.GetStock(stockId.Value);
         return Ok(stock?.ToDto());
@@ -58,16 +59,9 @@ public class StockController(IStockRepository stockRepository) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteStock([FromRoute] int id)
     {
-        var stock = await stockRepository.DeleteStock(id);
-        if (stock == null)
-            return StockNotfFound(id);
-
-        return NoContent();
-    }
-
-    private NotFoundObjectResult StockNotfFound(int id)
-    {
-        object message = new { Message = $"Stock with ID {id} was not found." };
-        return NotFound(message);
+        var stockId = await stockRepository.DeleteStock(id);
+        return (stockId == null)
+            ? NotFound(ItemNotFound(Item.Stock, id))
+            : Ok(ItemDeleted(Item.Stock, id));
     }
 }
