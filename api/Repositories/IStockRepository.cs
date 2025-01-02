@@ -9,5 +9,5 @@ public interface IStockRepository
     Task<int> CreateStock(StockDto stockDto);
     Task<int?> UpdateStock(int id, StockDto stockDto);
     Task<int?> DeleteStock(int id);
-
+    Task<bool> StockExists(int id);
 }

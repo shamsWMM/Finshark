@@ -10,11 +10,14 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
     public async Task<IEnumerable<Stock>> GetStocks()
         => await context.Stock
             .AsNoTracking()
+            .Include(s => s.Comments)
             .ToListAsync();
             
     public async Task<Stock?> GetStock(int id)
         => await context.Stock
-            .FindAsync(id);
+            .AsNoTracking()
+            .Include(s => s.Comments)
+            .FirstOrDefaultAsync(s => s.Id == id);
 
     public async Task<int> CreateStock(StockDto stockDto)
     {
@@ -45,4 +48,8 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
         await context.SaveChangesAsync();
         return stock.Id;
     }
+
+    public async Task<bool> StockExists(int id)
+        => await context.Stock.AnyAsync(s => s.Id == id);
+
 }
