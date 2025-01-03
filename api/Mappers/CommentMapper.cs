@@ -11,6 +11,7 @@ public static class CommentMapper
     public static CommentDto ToDto(this Comment comment, CommentDto? commentDto = null)
     {
         commentDto ??= new CommentDto();
+        commentDto.Id = comment.Id;
         commentDto.Title = comment.Title;
         commentDto.Content = comment.Content;
 

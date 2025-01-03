@@ -2,6 +2,8 @@ namespace api.Constants;
 
 public static class Messages
 {
+    public const string TextTooShort = "Text is too short.";
+    public const string TextTooLong = "Text is too long.";
     public enum Item
     {
         Stock,

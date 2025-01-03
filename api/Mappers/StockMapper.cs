@@ -6,14 +6,15 @@ public static class StockMapper
 {
     public static StockDto ToDto(this Stock stock, StockDto? stockDto = null)
     {
-        stockDto ??= new StockDto(); 
+        stockDto ??= new StockDto();
+        stockDto.Id = stock.Id; 
         stockDto.Symbol = stock.Symbol;
         stockDto.CompanyName = stock.CompanyName;
         stockDto.Purchase = stock.Purchase;
         stockDto.LastDiv = stock.LastDiv;
         stockDto.Industry = stock.Industry;
         stockDto.MarketCap = stock.MarketCap;
-        stockDto.Comments = stock.Comments.Select(c => c.ToDto()).ToList();
+        stockDto.Comments = stock.Comments.Select(c => c.ToDto());
 
         return stockDto;
     }
@@ -27,7 +28,6 @@ public static class StockMapper
         stock.LastDiv = stockDto.LastDiv;
         stock.Industry = stockDto.Industry;
         stock.MarketCap = stockDto.MarketCap;
-        stock.Comments = stockDto.Comments.Select(c => c.ToComment()).ToList();
 
         return stock;
     }
