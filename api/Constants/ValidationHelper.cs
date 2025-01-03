@@ -1,9 +1,10 @@
 namespace api.Constants;
 
-public static class Messages
+public static class ValidationHelper
 {
     public const string TextTooShort = "Text is too short.";
     public const string TextTooLong = "Text is too long.";
+    public const string NumberOutOfRange = "Number is out of range.";
     public enum Item
     {
         Stock,

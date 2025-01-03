@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using static api.Constants.Messages;
+using static api.Constants.ValidationHelper;
 using System.Text.Json.Serialization;
 
 namespace api.Dtos;

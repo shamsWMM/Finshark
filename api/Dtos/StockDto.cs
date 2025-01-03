@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using static api.Constants.Messages;
+using static api.Constants.ValidationHelper;
 
 namespace api.Dtos;
 public class StockDto
@@ -29,5 +29,5 @@ public class StockDto
     [Range(1, 5000000000)]
     public long MarketCap { get; set; }
     [JsonIgnore]
-    public IEnumerable<CommentDto> Comments { get; set; } = [];
+    public IEnumerable<CommentDto> Comments { get; set; } = new List<CommentDto>();
 }

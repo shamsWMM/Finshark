@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Repositories;
 using api.Mappers;
 using api.Dtos;
-using static api.Constants.Messages;
+using static api.Constants.ValidationHelper;
 
 namespace api.Controllers;
 

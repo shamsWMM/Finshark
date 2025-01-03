@@ -5,7 +5,8 @@ using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 using api.Repositories;
-using static api.Constants.Messages;
+using static api.Constants.ValidationHelper;
+using api.Helpers;
 
 namespace api.Controllers;
 
@@ -14,12 +15,15 @@ namespace api.Controllers;
 public class StockController(IStockRepository stockRepository) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetStocks()
+    public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
     {
-        var stocks = await stockRepository.GetStocks();
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var stocks = await stockRepository.GetStocks(query);
         return Ok(stocks.Select(s => s.ToDto()));
     }
-
+    
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetStock([FromRoute] int id)
     {

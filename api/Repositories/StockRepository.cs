@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using api.Data;
 using api.Dtos;
+using api.Helpers;
 using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +9,19 @@ using Microsoft.EntityFrameworkCore;
 namespace api.Repositories;
 public class StockRepository(ApplicationDBContext context) : IStockRepository
 {
-    public async Task<IEnumerable<Stock>> GetStocks()
-        => await context.Stock
-            .AsNoTracking()
+    public async Task<IEnumerable<Stock>> GetStocks(QueryObject query)
+    {
+        var stocks = context.Stock.AsNoTracking()
+            .AsQueryable()
+            .ApplyFilters(query);
+        
+        stocks = stocks.ApplyPaging(query, stocks.Count())
             .Include(s => s.Comments)
-            .ToListAsync();
-            
+            .OrderBy(s => s.Symbol);
+        
+        return await stocks.ToListAsync();
+    }
+
     public async Task<Stock?> GetStock(int id)
         => await context.Stock
             .AsNoTracking()
