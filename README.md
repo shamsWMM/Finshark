@@ -26,11 +26,14 @@ donent watch run
 ## 3. Adding NuGet Packgages
 - Use **&#x2318;** + **&#x21E7;** + **P** to open the Command Pallete on VS code
 - Select `NuGet: Focus on NuGet View` provided by the NuGet Gallery extension, and look up and install:
-    - Microsoft.EntityFrameworkCore.SqlServer
-    - Microsoft.EntityFrameworkCore.Tools
-    - Microsoft.EntityFrameworkCore.Design
-    - Microsoft.AspNetCore.Mvc.NewtonsoftJson
-    - Newtonsoft.Json
+    - Microsoft.EntityFrameworkCore.SqlServer @Microsoft
+    - Microsoft.EntityFrameworkCore.Tools @Microsoft
+    - Microsoft.EntityFrameworkCore.Design @Microsoft
+    - Microsoft.AspNetCore.Mvc.NewtonsoftJson @Microsoft
+    - Microsoft.Extensions.Identity.Core @Microsoft
+    - Microsoft.AspNetCore.Identity.EntityFrameworkCore @Microsoft
+    - Microsoft.AspNetCore.Authentication.JwtBearer @Microsoft
+    - Newtonsoft.Json @James Newton-King
 ## 4. Connecting to SQL Database and Setting Up Migrations
 - Install and run [Azure SQL Edge](https://hub.docker.com/r/microsoft/azure-sql-edge)
 ```bash
@@ -41,5 +44,10 @@ docker run --cap-add SYS_PTRACE -e 'ACCEPT_EULA=1' -e 'MSSQL_SA_PASSWORD=Admin12
 ```bash
 dotnet tool install --global dotnet-ef --version 8.0.0
 dotnet ef migrations add init
+dotnet ef database update
+```
+- Add Identity - This is done following the addition of the application user class and updating ApplicationDBContext to use it
+```bash
+dotnet ef migrations add Identity
 dotnet ef database update
 ```
