@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using api.Models;
 
@@ -8,6 +9,13 @@ namespace api.Helpers;
 
 public static class StockQueryExtensions
 {
+    public static readonly Dictionary<string, Expression<Func<Stock, object>>> PrecompiledSelectors =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "Symbol", stock => stock.Symbol },
+            { "CompanyName", stock => stock.CompanyName }
+        };
+    
     public static IQueryable<Stock> ApplyFilters(this IQueryable<Stock> query, QueryObject queryObject)
     {
         if (!string.IsNullOrWhiteSpace(queryObject.Symbol))
@@ -28,5 +36,16 @@ public static class StockQueryExtensions
 
         return query.Skip((queryObject.Page - 1) * queryObject.PageSize)
                     .Take(queryObject.PageSize);
+    }
+
+    public static IQueryable<Stock> ApplyOrderBy(this IQueryable<Stock> source, QueryObject query)
+    {
+        if (string.IsNullOrWhiteSpace(query.SortBy)
+        || !PrecompiledSelectors.TryGetValue(query.SortBy, out var selector))
+            return source;
+
+        return query.IsSortAscending
+            ? source.OrderBy(selector)
+            : source.OrderByDescending(selector);
     }
 }

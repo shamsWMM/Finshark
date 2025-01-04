@@ -13,13 +13,14 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
     {
         var stocks = context.Stock.AsNoTracking()
             .AsQueryable()
-            .ApplyFilters(query);
-        
-        stocks = stocks.ApplyPaging(query, stocks.Count())
-            .Include(s => s.Comments)
-            .OrderBy(s => s.Symbol);
-        
-        return await stocks.ToListAsync();
+            .ApplyFilters(query)
+            .ApplyOrderBy(query)
+            .Include(s => s.Comments);
+
+        var totalCount = await stocks.CountAsync();
+        var pagedStocks = stocks.ApplyPaging(query, totalCount);
+
+        return await pagedStocks.ToListAsync();
     }
 
     public async Task<Stock?> GetStock(int id)
