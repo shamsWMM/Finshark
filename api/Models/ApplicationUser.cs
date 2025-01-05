@@ -8,5 +8,5 @@ namespace api.Models;
 
 public class ApplicationUser : IdentityUser
 {
-
+    public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
 }

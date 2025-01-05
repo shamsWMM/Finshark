@@ -47,12 +47,9 @@ dotnet ef migrations add init
 dotnet ef database update
 ```
 - Add Identity - This is done following the addition of the application user class and updating ApplicationDBContext to use it
-```bash
-dotnet ef migrations add Identity
-dotnet ef database update
-```
 - Seed Roles - This is done following the configuration of role management in the Program.cs
+- Add Portfolios - Delete and restart database if facing too many errors upon update
 ```bash
-dotnet ef migrations add SeedRole
+dotnet ef migrations add <MigrationName>
 dotnet ef database update
 ```
