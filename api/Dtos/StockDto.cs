@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using static api.Constants.ValidationHelper;
+using static api.Helpers.ValidationHelper;
 
 namespace api.Dtos;
 public class StockDto

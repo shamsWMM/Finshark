@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using static api.Constants.ValidationHelper;
+using static api.Helpers.ValidationHelper;
 using System.Text.Json.Serialization;
 
 namespace api.Dtos;
@@ -20,6 +20,6 @@ public class CommentDto
     [Required]
     [MinLength(1, ErrorMessage = TextTooShort)]
     [MaxLength(500, ErrorMessage = TextTooLong)]
-    [StringLength(500, MinimumLength = 10, ErrorMessage = "Content must be between 10 and 500 characters")]
+    [StringLength(500, MinimumLength = 10, ErrorMessage = NumberOutOfRange)]
     public string Content { get; set; } = string.Empty;
 }

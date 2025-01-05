@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using static api.Constants.ValidationHelper;
+using static api.Helpers.ValidationHelper;
 
 namespace api.Helpers;
 

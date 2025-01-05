@@ -2,7 +2,5 @@ api/bin/
 api/migrations/
 api/obj/
 .DS_Store
-api.csproj
 FinShark.sln
-appsettings.json
 appsettings.Development.json

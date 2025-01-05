@@ -51,3 +51,8 @@ dotnet ef database update
 dotnet ef migrations add Identity
 dotnet ef database update
 ```
+- Seed Roles - This is done following the configuration of role management in the Program.cs
+```bash
+dotnet ef migrations add SeedRole
+dotnet ef database update
+```

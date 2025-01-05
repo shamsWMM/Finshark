@@ -5,7 +5,7 @@ using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 using api.Repositories;
-using static api.Constants.ValidationHelper;
+using static api.Helpers.ValidationHelper;
 using api.Helpers;
 
 namespace api.Controllers;
