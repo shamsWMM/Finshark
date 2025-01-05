@@ -13,17 +13,20 @@ public class CommentRepository(ApplicationDBContext context) : ICommentRepositor
 {
     public async Task<IEnumerable<Comment>> GetComments()
         => await context.Comment
+            .Include(c => c.User)
             .AsNoTracking()
             .ToListAsync();
 
     public async Task<Comment?> GetComment(int id)
         => await context.Comment
-            .FindAsync(id);
+            .Include(c => c.User)
+            .FirstOrDefaultAsync(c => c.Id == id);
 
-    public async Task<int> CreateComment(int stockId, CommentDto commentDto)
+    public async Task<int> CreateComment(string userId, int stockId, CommentDto commentDto)
     {
         var comment = commentDto.ToComment();
         comment.StockId = stockId;
+        comment.UserId = userId;
         
         await context.Comment.AddAsync(comment);
         await context.SaveChangesAsync();

@@ -3,12 +3,15 @@ using api.Repositories;
 using api.Mappers;
 using api.Dtos;
 using static api.Helpers.ValidationHelper;
+using Microsoft.AspNetCore.Identity;
+using api.Models;
+using api.Helpers;
 
 namespace api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CommentController(ICommentRepository commentRepository, IStockRepository stockRepository) : ControllerBase
+public class CommentController(ICommentRepository commentRepository, IStockRepository stockRepository, UserManager<ApplicationUser> userManager) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetComments()
@@ -37,7 +40,10 @@ public class CommentController(ICommentRepository commentRepository, IStockRepos
         if (!await stockRepository.StockExists(stockId))
             return BadRequest(ItemNotFound(Item.Stock, stockId));
 
-        var commentId = await commentRepository.CreateComment(stockId, commentDto);
+        var username = User.GetUsername();
+        var user = await userManager.FindByNameAsync(username);
+
+        var commentId = await commentRepository.CreateComment(user.Id, stockId, commentDto);
         var comment = await commentRepository.GetComment(commentId);
         return CreatedAtAction(nameof(GetComment), new { id = commentId }, comment?.ToDto());
     }

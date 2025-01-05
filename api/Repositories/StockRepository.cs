@@ -15,7 +15,8 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
             .AsQueryable()
             .ApplyFilters(query)
             .ApplyOrderBy(query)
-            .Include(s => s.Comments);
+            .Include(s => s.Comments)
+            .ThenInclude(c => c.User);
 
         var totalCount = await stocks.CountAsync();
         var pagedStocks = stocks.ApplyPaging(query, totalCount);
@@ -27,6 +28,7 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
         => await context.Stock
             .AsNoTracking()
             .Include(s => s.Comments)
+            .ThenInclude(c => c.User)
             .FirstOrDefaultAsync(s => s.Id == id);
 
     public async Task<int> CreateStock(StockDto stockDto)

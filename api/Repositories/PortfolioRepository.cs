@@ -14,6 +14,7 @@ public class PortfolioRepository(ApplicationDBContext context) : IPortfolioRepos
         return await context.Portfolio.Where(p => p.UserId.Equals(userId))
             .Include(p => p.Stock)
             .ThenInclude(s => s.Comments)
+            .ThenInclude(c => c.User)
             .Select(p => p.Stock.ToDto())
             .ToListAsync();
     }

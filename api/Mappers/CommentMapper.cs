@@ -12,6 +12,7 @@ public static class CommentMapper
     {
         var commentDto = new CommentDto();
         commentDto.Id = comment.Id;
+        commentDto.Username = comment.User.UserName;
         commentDto.Title = comment.Title;
         commentDto.Content = comment.Content;
 

@@ -12,6 +12,8 @@ public class CommentDto
 {
     [JsonIgnore]
     public int Id { get; set; }
+    [JsonIgnore]
+    public string Username { get; set; } = string.Empty;
     [Required]
     [MinLength(1, ErrorMessage = TextTooShort)]
     [MaxLength(50, ErrorMessage = TextTooLong)]
