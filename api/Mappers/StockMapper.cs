@@ -4,9 +4,9 @@ using api.Dtos;
 namespace api.Mappers;
 public static class StockMapper
 {
-    public static StockDto ToDto(this Stock stock, StockDto? stockDto = null)
+    public static StockDto ToDto(this Stock stock)
     {
-        stockDto ??= new StockDto();
+        var stockDto = new StockDto();
         stockDto.Id = stock.Id; 
         stockDto.Symbol = stock.Symbol;
         stockDto.CompanyName = stock.CompanyName;
