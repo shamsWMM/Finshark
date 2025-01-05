@@ -8,9 +8,9 @@ using api.Models;
 namespace api.Mappers;
 public static class CommentMapper
 {
-    public static CommentDto ToDto(this Comment comment, CommentDto? commentDto = null)
+    public static CommentDto ToDto(this Comment comment)
     {
-        commentDto ??= new CommentDto();
+        var commentDto = new CommentDto();
         commentDto.Id = comment.Id;
         commentDto.Title = comment.Title;
         commentDto.Content = comment.Content;

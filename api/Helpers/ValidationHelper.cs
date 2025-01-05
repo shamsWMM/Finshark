@@ -6,11 +6,13 @@ public static class ValidationHelper
     public const string TextTooLong = "Text is too long.";
     public const string NumberOutOfRange = "Number is out of range.";
     public const string InvalidLogin = "Invalid login.";
+    public const string FailedToCreate = "Failed to create.";
     public enum Item
     {
         Stock,
         Comment,
-        User
+        User,
+        Portfolio
     }
 
     public static object UserItem(string username, string email, string token)
@@ -21,5 +23,7 @@ public static class ValidationHelper
 
     public static object ItemDeleted(Item item, object identifier)
         => new { Message = $"{item} {identifier} deleted." };
-  
+
+    public static object ItemExists(Item item, object identifier)
+        => new { Message = $"{item} {identifier} already exists." };
 }

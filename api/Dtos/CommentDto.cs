@@ -20,6 +20,5 @@ public class CommentDto
     [Required]
     [MinLength(1, ErrorMessage = TextTooShort)]
     [MaxLength(500, ErrorMessage = TextTooLong)]
-    [StringLength(500, MinimumLength = 10, ErrorMessage = NumberOutOfRange)]
     public string Content { get; set; } = string.Empty;
 }
