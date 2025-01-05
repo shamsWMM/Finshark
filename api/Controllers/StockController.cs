@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Repositories;
 using static api.Helpers.ValidationHelper;
 using api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
@@ -15,6 +16,7 @@ namespace api.Controllers;
 public class StockController(IStockRepository stockRepository) : ControllerBase
 {
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid)

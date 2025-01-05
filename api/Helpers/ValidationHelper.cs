@@ -5,10 +5,12 @@ public static class ValidationHelper
     public const string TextTooShort = "Text is too short.";
     public const string TextTooLong = "Text is too long.";
     public const string NumberOutOfRange = "Number is out of range.";
+    public const string InvalidLogin = "Invalid login.";
     public enum Item
     {
         Stock,
         Comment,
+        User
     }
 
     public static object UserItem(string username, string email, string token)
