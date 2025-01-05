@@ -9,7 +9,7 @@ namespace api.Repositories;
 
 public class PortfolioRepository(ApplicationDBContext context) : IPortfolioRepository
 {
-    public async Task<IEnumerable<StockDto>> GetPortfolio(string userId)
+    public async Task<IEnumerable<StockDto>> GetPortfolios(string userId)
     {
         return await context.Portfolio.Where(p => p.UserId.Equals(userId))
             .Include(p => p.Stock)
@@ -18,7 +18,7 @@ public class PortfolioRepository(ApplicationDBContext context) : IPortfolioRepos
             .ToListAsync();
     }
 
-    public async Task AddStock(string userId, int stockId)
+    public async Task CreatePortfolio(string userId, int stockId)
     {
         var portfolio = new Portfolio
         {
@@ -27,5 +27,15 @@ public class PortfolioRepository(ApplicationDBContext context) : IPortfolioRepos
         };
         await context.Portfolio.AddAsync(portfolio);
         await context.SaveChangesAsync();
+    }
+
+    public async Task RemovePortfolio(string userId, int stockId)
+    {
+        var portfolio = await context.Portfolio.FirstOrDefaultAsync(p => p.UserId.Equals(userId) && p.StockId == stockId);
+        if (portfolio != null)
+        {
+            context.Portfolio.Remove(portfolio);
+            await context.SaveChangesAsync();
+        }
     }
 }

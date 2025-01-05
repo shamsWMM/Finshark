@@ -7,6 +7,7 @@ public static class ValidationHelper
     public const string NumberOutOfRange = "Number is out of range.";
     public const string InvalidLogin = "Invalid login.";
     public const string FailedToCreate = "Failed to create.";
+    public const string FailedToDelete = "Failed to delete.";
     public enum Item
     {
         Stock,

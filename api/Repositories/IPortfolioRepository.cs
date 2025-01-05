@@ -9,6 +9,7 @@ namespace api.Repositories;
 
 public interface IPortfolioRepository
 {
-    Task<IEnumerable<StockDto>> GetPortfolio(string userId);
-    Task AddStock(string userId, int stockId);
+    Task<IEnumerable<StockDto>> GetPortfolios(string userId);
+    Task CreatePortfolio(string userId, int stockId);
+    Task RemovePortfolio(string userId, int stockId);
 }

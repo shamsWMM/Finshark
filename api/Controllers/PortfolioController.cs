@@ -21,7 +21,7 @@ public class PortfolioController(UserManager<ApplicationUser> userManager, IStoc
     {
         var Username = User.GetUsername();
         var user = await userManager.FindByNameAsync(Username);
-        var portfolio = await portfolioRepository.GetPortfolio(user.Id);
+        var portfolio = await portfolioRepository.GetPortfolios(user.Id);
         return Ok(portfolio);
     }
 
@@ -34,15 +34,34 @@ public class PortfolioController(UserManager<ApplicationUser> userManager, IStoc
         if(!await stockRepository.StockExists(stockId))
             return BadRequest(ItemNotFound(Item.Stock, stockId));
 
-        var portfolio = await portfolioRepository.GetPortfolio(user.Id);
+        var portfolio = await portfolioRepository.GetPortfolios(user.Id);
         if(portfolio.Any(stockDto => stockDto.Id == stockId))
             return BadRequest(ItemExists(Item.Stock, stockId));
 
-        await portfolioRepository.AddStock(user.Id, stockId);
-        portfolio = await portfolioRepository.GetPortfolio(user.Id);
+        await portfolioRepository.CreatePortfolio(user.Id, stockId);
+        portfolio = await portfolioRepository.GetPortfolios(user.Id);
         if(!portfolio.Any(stockDto => stockDto.Id == stockId))
             return StatusCode(500, FailedToCreate);
         
         return Created();
     }
+
+    [HttpDelete("{stockId}")]
+    [Authorize]
+    public async Task<IActionResult> RemovePortfolio(int stockId)
+    {
+        var Username = User.GetUsername();
+        var user = await userManager.FindByNameAsync(Username);
+        var portfolio = await portfolioRepository.GetPortfolios(user.Id);
+        if(!portfolio.Any(stockDto => stockDto.Id == stockId))
+            return BadRequest(ItemNotFound(Item.Stock, stockId));
+
+        await portfolioRepository.RemovePortfolio(user.Id, stockId);
+        portfolio = await portfolioRepository.GetPortfolios(user.Id);
+        if(portfolio.Any(stockDto => stockDto.Id == stockId))
+            return StatusCode(500, FailedToDelete);
+        
+        return NoContent();
+    }
+
 }
