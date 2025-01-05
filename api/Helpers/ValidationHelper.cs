@@ -9,16 +9,15 @@ public static class ValidationHelper
     {
         Stock,
         Comment,
-        User
     }
+
+    public static object UserItem(string username, string email, string token)
+        => new { Username = username, Email = email, Token = token };
 
     public static object ItemNotFound(Item item, object identifier)
         => new { Message = $"{item} {identifier} not found." };
 
     public static object ItemDeleted(Item item, object identifier)
         => new { Message = $"{item} {identifier} deleted." };
-
-    public static object ItemCreated(Item item, object identifier)
-        => new { Message = $"{item} {identifier} created." };
-        
+  
 }
