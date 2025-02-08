@@ -46,10 +46,3 @@ dotnet tool install --global dotnet-ef --version 8.0.0
 dotnet ef migrations add init
 dotnet ef database update
 ```
-- Add Identity - This is done following the addition of the application user class and updating ApplicationDBContext to use it
-- Seed Roles - This is done following the configuration of role management in the Program.cs
-- Add Portfolios - Delete and restart database if facing too many errors upon update
-```bash
-dotnet ef migrations add <MigrationName>
-dotnet ef database update
-```
